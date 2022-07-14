@@ -1,0 +1,78 @@
+
+let telegram = require('../../Models/Telegram');
+let Phone    = require('../../Models/Phone');
+let UserInfo = require('../../Models/UserInfo');
+let helpers  = require('../../Helpers/Helpers');
+
+module.exports = function(redT, id, contact) {
+	let phoneCrack = helpers.phoneCrack(contact);
+	if (phoneCrack) {
+		Phone.findOne({'phone':phoneCrack.phone}, 'uid region phone', function(err, check1){
+			if (check1) {
+				try {
+					telegram.create({'form':id, 'phone':phoneCrack.phone, 'uid': check1.uid}, function(err, cP){
+						phoneCrack = null;
+						
+					UserInfo.findOne({id: check1.uid},'veryphone veryold',function (err,ussss){
+						if(!!ussss){	
+					
+					
+							if(ussss.veryphone == false){
+					
+					
+								if (!!cP) {
+									UserInfo.findOneAndUpdate({id:check1.uid}, {$set:{veryphone:true,veryold:true}, $inc:{red:20000}}).exec(function(err, info){
+										if(!!info){
+											let opts = {
+											parse_mode: 'markdown',
+											reply_markup: {
+												keyboard: [
+													[{text: 'OTP'}],
+												],
+												resize_keyboard: true,
+											}
+										};
+											redT.telegram.sendMessage(id, '_XÁC THỰC THÀNH CÔNG_\nChào Mừng *'+info.name+'*, bạn đã được nhận 20K. GỬI AE CHÍNH SÁCH NẠP RÚT TẠI VIN99.CLUB - SÂN CHƠI HOÀNG GIA. Số tiền tối thiểu có thể rút ra là 200K và số dư trong tài khoản sau khi đặt lệnh rút phải còn tối thiểu 20k. Tài khoản rút tiền phải là tài khoản đã phát sinh lần nạp đầu tiên vào game tối thiểu là 50k. Các tài khoản chưa phát sinh lần nạp đầu đã tạo đơn rút tiền sẽ bị treo đơn vĩnh viễn. Sau mỗi lần nạp tiền tổng cược của các bạn phải = hoặc > số tiền đã nạp vào thì mới đạt đủ điều kiện để rút ra. VD: Các bạn nạp 50k vào game các bạn sẽ phải cược sao cho tổng tiền cược = 50k số tiền đã nạp vào game (Tổng tiền cược sẽ được tính cả cược thắng & thua cộng lại). Nếu các bạn thắng lớn đủ min rút 200k thì khi đó các bạn đủ điều kiện để rút tiền về ATM của mình với số dư tối thiểu còn lại trong game là 20k không được rút ra toàn bộ về 0₫. Các bạn hãy tham gia đường link để hoàn thành nhiệm vụ ADD 20 member từ các nhóm game bài & casino vào nhóm "BÚ LỘC VIN99" - https://t.me/+drsVXIlcvPE0YjU1 để nhận ngay GIFCODE 50K nhé!. VIN99 - SÂN CHƠI ĐẠI GIA -> https://share.vidyard.com/watch/fwSyByMT11bug8EZxFRbBe?autoplay=1 Chúc các bạn chơi game vui vẻ...\n\n*HƯỚNG DẪN*\n\nNhập:\n*OTP*:           Lấy mã OTP miễn phí.\n', opts);
+											if (void 0 !== redT.users[check1.uid]) {
+												redT.users[check1.uid].forEach(function(client){
+													client.red({notice:{title:'THÀNH CÔNG', text: 'Xác thực thành công.!\nChúc các bạn may mắn tại VIN99 CLUB...'}, user:{red:info.red*1+20000, phone:helpers.cutPhone(check1.region+check1.phone), veryphone:true}});
+												});
+											}
+											redT = null;
+											id = null;
+										}
+									});
+								}else{
+									redT.telegram.sendMessage(id, '_Thao tác thất bại_', {parse_mode: 'markdown',reply_markup: {resize_keyboard: true}});
+									redT = null;
+									id = null;
+								}
+								
+							}else{
+								
+									redT.telegram.sendMessage(id, 'Bạn đã đăng ký số điện thoại rồi!', {parse_mode:'markdown',reply_markup:{resize_keyboard:true}});
+									redT = null;
+									phoneCrack = null;
+									id = null;		
+							}	
+						
+						}
+						
+					})	
+						
+					});
+				} catch (error) {
+					redT.telegram.sendMessage(id, '_Thao tác thất bại_', {parse_mode: 'markdown',reply_markup: {resize_keyboard: true}});
+					redT = null;
+					id = null;
+					phoneCrack = null;
+				}
+			}else{
+				redT.telegram.sendMessage(id, 'Số điện thoại này chưa được đăng ký. Vui lòng đăng ký tại _VIN99_', {parse_mode:'markdown',reply_markup:{resize_keyboard:true}});
+				redT = null;
+				phoneCrack = null;
+				id = null;
+			}
+		});
+	}
+}

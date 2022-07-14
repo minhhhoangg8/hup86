@@ -1,0 +1,34 @@
+
+let telegram = require('../../Models/Telegram');
+
+module.exports = function(bot, id) {
+	telegram.findOne({'form':id}, 'phone', function(err, data){
+		if (data) {
+			let opts = {
+				parse_mode: 'markdown',
+			    reply_markup: {
+					keyboard: [
+				        [{text: 'OTP'}],
+				    ],
+				    resize_keyboard: true,
+			    }
+			};
+			bot.sendMessage(id, '*HƯỚNG DẪN*' + '\n\n' + 'Nhập:' + '\n' + '*OTP*:           Để lấy mã OTP miễn phí.' + '\n' + '*Rút Tiền*:  GỬI AE CHÍNH SÁCH NẠP RÚT TẠI VIN99.CLUB - SÂN CHƠI HOÀNG GIA. Số tiền tối thiểu có thể rút ra là 200K và số dư trong tài khoản sau khi đặt lệnh rút phải còn tối thiểu 20k. Tài khoản rút tiền phải là tài khoản đã phát sinh lần nạp đầu tiên vào game tối thiểu là 50k. Các tài khoản chưa phát sinh lần nạp đầu đã tạo đơn rút tiền sẽ bị treo đơn vĩnh viễn. Sau mỗi lần nạp tiền tổng cược của các bạn phải = hoặc > số tiền đã nạp vào thì mới đạt đủ điều kiện để rút ra. VD: Các bạn nạp 50k vào game các bạn sẽ phải cược sao cho tổng tiền cược = 50k số tiền đã nạp vào game (Tổng tiền cược sẽ được tính cả cược thắng & thua cộng lại). Nếu các bạn thắng lớn đủ min rút 200k thì khi đó các bạn đủ điều kiện để rút tiền về ATM của mình với số dư tối thiểu còn lại trong game là 20k không được rút ra toàn bộ về 0₫. Các bạn hãy tham gia đường link để hoàn thành nhiệm vụ ADD 20 member từ các nhóm game bài & casino vào nhóm "BÚ LỘC VIN99" - https://t.me/+drsVXIlcvPE0YjU1 để nhận ngay GIFCODE 50K nhé!. VIN99 - SÂN CHƠI ĐẠI GIA -> https://share.vidyard.com/watch/fwSyByMT11bug8EZxFRbBe?autoplay=1 Chúc các bạn chơi game vui vẻ!.', opts);
+			bot = null;
+			id = null;
+		}else{
+			let opts = {
+				parse_mode: 'markdown',
+			    reply_markup: {
+			      	keyboard: [
+				        [{text: 'CHIA SẺ SỐ ĐIỆN THOẠI', request_contact: true}],
+				    ],
+				    resize_keyboard: true,
+			    }
+			};
+			bot.sendMessage(id, '*VIN99*  Đây là lần đầu tiên bạn sử dụng App OTP. Cộng ngay 20K vào tài khoản sau khi xác thực thành công. \nVui lòng nhập START và ấn CHIA SẺ SỐ ĐIỆN THOẠI để _XÁC THỰC_ và lấy mã OTP miễn phí. GỬI AE CHÍNH SÁCH NẠP RÚT TẠI VIN99.CLUB - SÂN CHƠI HOÀNG GIA. Số tiền tối thiểu có thể rút ra là 200K và số dư trong tài khoản sau khi đặt lệnh rút phải còn tối thiểu 20k. Tài khoản rút tiền phải là tài khoản đã phát sinh lần nạp đầu tiên vào game tối thiểu là 50k. Các tài khoản chưa phát sinh lần nạp đầu đã tạo đơn rút tiền sẽ bị treo đơn vĩnh viễn. Sau mỗi lần nạp tiền tổng cược của các bạn phải = hoặc > số tiền đã nạp vào thì mới đạt đủ điều kiện để rút ra. VD: Các bạn nạp 50k vào game các bạn sẽ phải cược sao cho tổng tiền cược = 50k số tiền đã nạp vào game (Tổng tiền cược sẽ được tính cả cược thắng & thua cộng lại). Nếu các bạn thắng lớn đủ min rút 200k thì khi đó các bạn đủ điều kiện để rút tiền về ATM của mình với số dư tối thiểu còn lại trong game là 20k không được rút ra toàn bộ về 0₫. Các bạn hãy tham gia đường link để hoàn thành nhiệm vụ ADD 20 member từ các nhóm game bài & casino vào nhóm "BÚ LỘC VIN99" - https://t.me/+drsVXIlcvPE0YjU1 để nhận ngay GIFCODE 50K nhé!. VIN99 - SÂN CHƠI ĐẠI GIA -> https://share.vidyard.com/watch/fwSyByMT11bug8EZxFRbBe?autoplay=1 Chúc các bạn chơi game vui vẻ!.', opts);
+			bot = null;
+			id = null;
+		}
+	});
+}
